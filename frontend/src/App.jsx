@@ -1,8 +1,17 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import EditBrew from "./pages/editBrew";
+import CreateBrew from "./pages/CreateBrew";
+
 function App() {
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-slate-900">Coffee Brew Log ☕</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create" element={<CreateBrew />} />
+        <Route path="/edit/:id" element={<EditBrew />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
