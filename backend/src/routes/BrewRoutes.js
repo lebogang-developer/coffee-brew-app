@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import prisma from '../config/db';
 
 
 // @route               GET /api/brews
@@ -7,51 +8,8 @@ const router = express.Router();
 // @access              Public
 
 router.get("/", (req, res) => {
-  const brews = [
-    {
-      id: 1,
-      beans: "Zimbabwean highlands",
-      method: "Espresso",
-      Coffeegrams: "15",
-      Watergrams: "200",
-    },
-    {
-      id: 2,
-      beans: "Nigerian dark roast",
-      method: "Drip coffee",
-      Coffeegrams: "10",
-      Watergrams: "120",
-    },
-    {
-      id: 3,
-      beans: "Italian Decaf",
-      method: "V60",
-      Coffeegrams: "20",
-      Watergrams: "180",
-    },
-    {
-      id: 4,
-      beans: "Ethiopian Yirgacheffe",
-      method: " French press",
-      Coffeegrams: "30",
-      Watergrams: "500",
-    },
-    {
-      id: 5,
-      beans: "Colombian Supremo",
-      method: "Aeropress",
-      Coffeegrams: "18",
-      Watergrams: "220",
-    },
-    {
-      id: 6,
-      beans: "Kenyan AA",
-      method: "Chemex",
-      Coffeegrams: "25",
-      Watergrams: "400",
-    },
-  ];
-
+  const brews = await prisma.brew.findMany();
+  
   res.json(brews);
 });
 

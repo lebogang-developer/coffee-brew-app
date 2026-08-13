@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Brew {
+  id        Int      @id @default(autoincrement())
+  coffee    String
+  method    String
+  rating    Int
+  notes     String
+  createdAt DateTime @default(now())
+}
