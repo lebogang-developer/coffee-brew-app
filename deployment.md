@@ -15,5 +15,4 @@ The frontend and backend are deployed separately.
 
 ## Frontend
 
-```text
-PASTE_FRONTEND_URL_HERE
+Live demo: https://coffee-brew-app-uk1v-five.vercel.app/
