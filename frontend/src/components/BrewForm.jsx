@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createBrew, updateBrew } from "../brewService";
+import { createBrew, updateBrew } from "./brewService.js";
 
 function BrewForm({ brewToEdit, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
