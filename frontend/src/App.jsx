@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import FilterBar from "./components/FilterBar";
 import BrewForm from "./components/BrewForm.jsx";
 import BrewList from "./components/BrewList";
 import { getBrews, deleteBrew } from "./components/brewService.js";
@@ -21,7 +22,7 @@ function App() {
   const [brewToEdit, setBrewToEdit] = useState(null);
 
   // Selected filter
-  const [selectedMethod, setSelectedMethod] = useState("All");
+  const [selectedMethod, setSelectedMethod] = useState("all");
 
   // Delete loading state
   const [deletingId, setDeletingId] = useState(null);
@@ -116,7 +117,7 @@ function App() {
 
   // Filter brews
   const filteredBrews = useMemo(() => {
-    if (selectedMethod === "All") {
+    if (selectedMethod === "all") {
       return brews;
     }
 
@@ -169,6 +170,14 @@ function App() {
           </p>
         </div>
 
+        {/* Filter */}
+        {/* {!loading && brews.length > 0 && (
+          <FilterBar
+            method={selectedMethod}
+            onMethodChange={setSelectedMethod}
+          />
+        )} */}
+
         {/* Error message */}
         {error && (
           <div className="mb-6 flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -186,29 +195,10 @@ function App() {
 
         {/* Filter */}
         {!loading && brews.length > 0 && (
-          <div className="mb-6 flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h3 className="font-semibold text-stone-900">Filter brews</h3>
-
-              <p className="text-sm text-stone-500">
-                View brews by brewing method.
-              </p>
-            </div>
-
-            <select
-              value={selectedMethod}
-              onChange={(event) => setSelectedMethod(event.target.value)}
-              className="rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-700 outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100"
-            >
-              <option value="All">All Methods</option>
-
-              {methods.map((method) => (
-                <option key={method} value={method}>
-                  {method}
-                </option>
-              ))}
-            </select>
-          </div>
+          <FilterBar
+            method={selectedMethod}
+            onMethodChange={setSelectedMethod}
+          />
         )}
 
         {/* Loading state */}
