@@ -1,49 +1,57 @@
 import {
   getAllBrews,
-  getBrewId,
+  getBrewById,
   createBrew,
   updateBrew,
   deleteBrew,
-  getBrewById,
-} from "../services/brewServices.js";
+} from "../services/brewService.js";
 
 // GET /api/brews
+// Get all brews
 export async function getBrews(req, res) {
   try {
     const brews = await getAllBrews();
+
     res.status(200).json(brews);
   } catch (error) {
-    console.error("Error fetching brews", error);
+    console.error("Error fetching brews:", error);
+
     res.status(500).json({
-      mesaage: "Failed to fetch brews",
+      message: "Failed to fetch brews",
     });
   }
 }
 
 // GET /api/brews/:id
+// Get one brew
 export async function getBrew(req, res) {
   try {
     const { id } = req.params;
-    const brew = await getBrewId(id);
+
+    const brew = await getBrewById(id);
 
     if (!brew) {
       return res.status(404).json({
-        mesaage: "Brew not found!",
+        message: "Brew not found",
       });
-      res.status(200).json(brew);
     }
+
+    res.status(200).json(brew);
   } catch (error) {
-    console.error("Error fetching brew", error);
+    console.error("Error fetching brew:", error);
+
     res.status(500).json({
-      mesaage: "Failed to fetch brews",
+      message: "Failed to fetch brew",
     });
   }
 }
 
 // POST /api/brews
-export async function addbrews(req, res) {
+// Create a new brew
+export async function addBrew(req, res) {
   try {
     const { coffee, method, rating, notes } = req.body;
+
     // Validate required fields
     if (
       !coffee?.trim() ||
@@ -54,15 +62,30 @@ export async function addbrews(req, res) {
       !notes?.trim()
     ) {
       return res.status(400).json({
-        message: "All fields are required!",
+        message: "All fields are required",
       });
     }
+
+    // Validate rating
+    const numericRating = Number(rating);
+
+    if (
+      !Number.isInteger(numericRating) ||
+      numericRating < 1 ||
+      numericRating > 5
+    ) {
+      return res.status(400).json({
+        message: "Rating must be a whole number between 1 and 5",
+      });
+    }
+
     const brew = await createBrew({
       coffee: coffee.trim(),
-      method: methos.trim(),
-      rating,
+      method: method.trim(),
+      rating: numericRating,
       notes: notes.trim(),
     });
+
     res.status(201).json(brew);
   } catch (error) {
     console.error("Error creating brew:", error);
@@ -74,10 +97,11 @@ export async function addbrews(req, res) {
 }
 
 // PUT /api/brews/:id
+// Update a brew
 export async function editBrew(req, res) {
   try {
     const { id } = req.params;
-    const { coffee, methos, rating, notes } = req.body;
+    const { coffee, method, rating, notes } = req.body;
 
     // Validate required fields
     if (
@@ -89,15 +113,39 @@ export async function editBrew(req, res) {
       !notes?.trim()
     ) {
       return res.status(400).json({
-        mesaage: "Brew not found!",
+        message: "All fields are required",
       });
     }
+
+    // Validate rating
+    const numericRating = Number(rating);
+
+    if (
+      !Number.isInteger(numericRating) ||
+      numericRating < 1 ||
+      numericRating > 5
+    ) {
+      return res.status(400).json({
+        message: "Rating must be a whole number between 1 and 5",
+      });
+    }
+
+    // Check if brew exists
+    const existingBrew = await getBrewById(id);
+
+    if (!existingBrew) {
+      return res.status(404).json({
+        message: "Brew not found",
+      });
+    }
+
     const brew = await updateBrew(id, {
       coffee: coffee.trim(),
-      method: methos.trim(),
-      rating,
+      method: method.trim(),
+      rating: numericRating,
       notes: notes.trim(),
     });
+
     res.status(200).json(brew);
   } catch (error) {
     console.error("Error updating brew:", error);
@@ -109,18 +157,20 @@ export async function editBrew(req, res) {
 }
 
 // DELETE /api/brews/:id
+// Delete a brew
 export async function removeBrew(req, res) {
   try {
     const { id } = req.params;
 
-    //Check if brew exists
-    const exiistingBrew = await getBrewById(id);
+    // Check if brew exists
+    const existingBrew = await getBrewById(id);
 
-    if (!exiistingBrew) {
-      return res.status(400).json({
-        message: "Brew not found!",
+    if (!existingBrew) {
+      return res.status(404).json({
+        message: "Brew not found",
       });
     }
+
     await deleteBrew(id);
 
     res.status(200).json({

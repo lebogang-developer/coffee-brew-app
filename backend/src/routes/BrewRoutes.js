@@ -6,17 +6,16 @@ import {
   addBrew,
   editBrew,
   removeBrew,
-} from "../controllers/brewController";
-import { deleteBrew } from "../services/brewServices";
+} from "../controllers/brewController.js";
 
 const router = express.Router();
 
 // GET /api/brews
-// GET all brews
+// Get all brews
 router.get("/", getBrews);
 
 // GET /api/brews/:id
-// Get a single brew
+// Get one brew
 router.get("/:id", getBrew);
 
 // POST /api/brews
@@ -24,11 +23,11 @@ router.get("/:id", getBrew);
 router.post("/", addBrew);
 
 // PUT /api/brews/:id
-// Update an existing brew
+// Update a brew
 router.put("/:id", editBrew);
 
 // DELETE /api/brews/:id
 // Delete a brew
-router.delete("/:id", removeBrewBrew);
+router.delete("/:id", removeBrew);
 
 export default router;

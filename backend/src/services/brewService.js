@@ -1,6 +1,6 @@
-import prisma from "../config/db";
+import prisma from "../config/db.js";
 
-// GET all brews
+// Get all brews
 export async function getAllBrews() {
   return await prisma.brew.findMany({
     orderBy: {
@@ -9,7 +9,7 @@ export async function getAllBrews() {
   });
 }
 
-// GET brew by id
+// Get a single brew by ID
 export async function getBrewById(id) {
   return await prisma.brew.findUnique({
     where: {
@@ -18,19 +18,19 @@ export async function getBrewById(id) {
   });
 }
 
-// CREATE a new brew
+// Create a new brew
 export async function createBrew(data) {
   return await prisma.brew.create({
     data: {
       coffee: data.coffee,
-      method: data.methos,
+      method: data.method,
       rating: Number(data.rating),
       notes: data.notes,
     },
   });
 }
 
-// UPDATE/EDIT an existing brew
+// Update an existing brew
 export async function updateBrew(id, data) {
   return await prisma.brew.update({
     where: {
@@ -38,14 +38,14 @@ export async function updateBrew(id, data) {
     },
     data: {
       coffee: data.coffee,
-      method: data.methos,
+      method: data.method,
       rating: Number(data.rating),
       notes: data.notes,
     },
   });
 }
 
-//DELETE a brew
+// Delete a brew
 export async function deleteBrew(id) {
   return await prisma.brew.delete({
     where: {
