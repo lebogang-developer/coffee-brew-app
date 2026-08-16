@@ -1,27 +1,34 @@
 import express from "express";
+
+import {
+  getBrews,
+  getBrew,
+  addBrew,
+  editBrew,
+  removeBrew,
+} from "../controllers/brewController";
+import { deleteBrew } from "../services/brewServices";
+
 const router = express.Router();
-import prisma from '../config/db';
 
+// GET /api/brews
+// GET all brews
+router.get("/", getBrews);
 
-// @route               GET /api/brews
-// @description         get all brews
-// @access              Public
+// GET /api/brews/:id
+// Get a single brew
+router.get("/:id", getBrew);
 
-router.get("/", (req, res) => {
-  const brews = await prisma.brew.findMany();
-  
-  res.json(brews);
-});
+// POST /api/brews
+// Create a new brew
+router.post("/", addBrew);
 
-// @route               POST /api/brews
-// @description         create new brew
-// @access              Public
+// PUT /api/brews/:id
+// Update an existing brew
+router.put("/:id", editBrew);
 
-router.post("/", (req, res) => {
-  const { beans, method } = req.body;
-  console.log(method);
-
-  res.send(beans);
-});
+// DELETE /api/brews/:id
+// Delete a brew
+router.delete("/:id", removeBrewBrew);
 
 export default router;
